@@ -9,6 +9,66 @@ namespace sisedi
 {
     internal class Program
     {
+
+
+        static void SalvarEditorasEmArquivoCsv(List<Editora> bancoEditoras, string caminhoDoArquivo)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(caminhoDoArquivo))
+                {
+                    writer.WriteLine("codigo,nome,sigla");
+                    foreach (var editora in bancoEditoras)
+                    {
+                        writer.WriteLine( 
+                            $"{editora.ediid}," +
+                            $"{editora.edinome}, " +
+                            $"{editora.edisigla}
+                        ");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro ao salvar a lista de editoras em  CSV: {ex.Message}");
+            }
+        }
+
+        static List<Editora> CarregarEditorasDeArquivoCsv(string caminhoDoArquivo)
+        {
+            var bancoEditoras = new List<Editora>();
+            try
+            {
+                if (File.Exists(caminhoDoArquivo) == true)
+                {
+                    using (StreamReader reader = new StreamReader(caminhoDoArquivo))
+                    {
+                        string linha = reader.ReadLine();
+                        while ((linha = reader.ReadLine()) != null)
+                        {
+                            var partes = linha.Split(',');
+                            if (partes.Length == 3)
+                            {
+                                int codigo = int.Parse(partes[0]);
+                                string nome = partes[1];
+                                string sigla = partes[2];
+                                bancoEditoras.Add(new Editora{
+                                    ediid = codigo,
+                                    edinome = nome,
+                                    edisigla = sigla
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro ao carregar a lista de editoras de CSV: {ex.Message}");
+            }
+            return bancoEditoras;
+        }
+
         static void Main(string[] args)
         {
 
@@ -18,6 +78,8 @@ namespace sisedi
             List<Editora> bancoEditoras = new List<Editora>();
             List<Livro> bancoLivros = new List<Livro>();
             List<Autor> bancoAutores = new List<Autor>();
+
+            CarregarEditorasDeArquivoCsv(bancoEditoras, "estados.csv");
 
             // Menu principal
             while (opc != 9)
@@ -362,6 +424,8 @@ namespace sisedi
                     }
                 }
             }
+
+            SalvarEditorasEmArquivoCsv(bancoEditoras, "estados.csv");
         }
     }
 }
