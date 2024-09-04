@@ -1,0 +1,368 @@
+﻿using sisedi;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace sisedi
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int opc = 0;
+            int opcsub = 0;
+
+            List<Editora> bancoEditoras = new List<Editora>();
+            List<Livro> bancoLivros = new List<Livro>();
+            List<Autor> bancoAutores = new List<Autor>();
+
+            // Menu principal
+            while (opc != 9)
+            {
+                Console.WriteLine("SISEDI");
+                Console.WriteLine("1.Editoras");
+                Console.WriteLine("2.Livros");
+                Console.WriteLine("3.Autores");
+                Console.WriteLine("9.Sair");
+                Console.WriteLine("Digite a opção: ");
+
+                opc = int.Parse(Console.ReadLine());
+
+                opcsub = 0;
+                // Operações Editoras
+                if (opc == 1)
+                {
+                    // Menu Editoras
+                    while (opcsub != 19)
+                    {
+                        Console.WriteLine("--------------");
+                        Console.WriteLine("Editoras");
+                        Console.WriteLine("10.Inserir");
+                        Console.WriteLine("11.Alterar");
+                        Console.WriteLine("12.Excluir");
+                        Console.WriteLine("13.Pesquisar");
+                        Console.WriteLine("14.Exibir");
+                        Console.WriteLine("19. Sair");
+                        Console.WriteLine("Digite a opção: ");
+                        opcsub = int.Parse(Console.ReadLine());
+                        Console.WriteLine("--------------");
+
+                        switch (opcsub)
+                        {
+
+                            // Inserir Editora
+                            case 10:
+                                Editora itemIns = new Editora();
+                                Console.WriteLine("Id editora: ");
+                                itemIns.ediid = int.Parse(Console.ReadLine());
+                                Console.WriteLine("Nome editora: ");
+                                itemIns.edinome = Console.ReadLine();
+                                Console.WriteLine("Sigla editora: ");
+                                itemIns.edisigla = Console.ReadLine();
+                                Console.WriteLine("Observações editora: ");
+                                itemIns.ediobservacoes = Console.ReadLine();
+
+                                bancoEditoras.Add(itemIns);
+
+                                break;
+
+                            // Alterar Editora
+                            case 11:
+                                Console.WriteLine("Sigla da editora para alterar: ");
+                                string varSiglaAlt = Console.ReadLine();
+                                foreach (var ediAlt in bancoEditoras)
+                                {
+                                    if (ediAlt.edisigla == varSiglaAlt)
+                                    {
+                                        Console.WriteLine("Nome editora: ");
+                                        ediAlt.edinome = Console.ReadLine();
+                                        Console.WriteLine("Sigla editora: ");
+                                        ediAlt.edisigla = Console.ReadLine();
+                                        Console.WriteLine("Observações editora: ");
+                                        ediAlt.ediobservacoes = Console.ReadLine();
+                                        break;
+                                    }
+                                }
+                                break;
+
+                            // Excluir Editora
+                            case 12:
+                                Console.WriteLine("Sigla da editora para excluir: ");
+                                string varSiglaExc = Console.ReadLine();
+                                foreach (var ediExc in bancoEditoras)
+                                {
+                                    if (ediExc.edisigla == varSiglaExc)
+                                    {
+                                        bancoEditoras.Remove(ediExc);
+                                        break;
+                                    }
+                                }
+
+                                break;
+
+                            // Pesquisar Editora
+                            case 13:
+                                Console.WriteLine("Sigla da editora para pesquisar: ");
+                                string varSiglaPes = Console.ReadLine();
+                                foreach (var ediPes in bancoEditoras)
+                                {
+                                    if (ediPes.edisigla == varSiglaPes)
+                                    {
+                                        Console.WriteLine(
+                                            ediPes.ediid + " - " +
+                                            ediPes.edinome + " - " +
+                                            ediPes.edisigla + " - " +
+                                            ediPes.ediobservacoes
+                                        );
+                                    }
+                                }
+
+                                break;
+
+                            // Exibir Editoras
+                            case 14:
+                                foreach (var ediExi in bancoEditoras)
+                                {
+                                    Console.WriteLine(
+                                        ediExi.ediid + " - " +
+                                        ediExi.edinome + " - " +
+                                        ediExi.edisigla + " - " +
+                                        ediExi.ediobservacoes
+                                    );
+                                }
+                                break;
+                        }
+                    }
+                }
+                // Operações Livros
+                else if (opc == 2)
+                {
+                    // Menu Livros
+                    while (opcsub != 19)
+                    {
+                        Console.WriteLine("--------------");
+                        Console.WriteLine("Livros");
+                        Console.WriteLine("10.Inserir");
+                        Console.WriteLine("11.Alterar");
+                        Console.WriteLine("12.Excluir");
+                        Console.WriteLine("13.Pesquisar");
+                        Console.WriteLine("14.Exibir");
+                        Console.WriteLine("19. Sair");
+                        Console.WriteLine("Digite a opção: ");
+                        opcsub = int.Parse(Console.ReadLine());
+                        Console.WriteLine("--------------");
+
+                        switch (opcsub)
+                        {
+
+                            // Inserir Livro
+                            case 10:
+                                Livro itemIns = new Livro();
+                                Console.WriteLine("Id livro: ");
+                                itemIns.livid = int.Parse(Console.ReadLine());
+                                Console.WriteLine("Nome livro: ");
+                                itemIns.livnome = Console.ReadLine();
+                                Console.WriteLine("Ano de publicação livro: ");
+                                itemIns.livanopublicacao = Console.ReadLine();
+                                Console.WriteLine("Isbn do livro: ");
+                                itemIns.livisbn = int.Parse(Console.ReadLine());
+                                Console.WriteLine("Observações livro: ");
+                                itemIns.livobservacoes = Console.ReadLine();
+                                Console.WriteLine("Id editora livro: ");
+                                itemIns.ediid = int.Parse(Console.ReadLine());
+
+                                bancoLivros.Add(itemIns);
+
+                                break;
+
+                            // Alterar Livro
+                            case 11:
+                                Console.WriteLine("Isbn do livro para alterar: ");
+                                int varIsnbAlt = int.Parse(Console.ReadLine());
+                                foreach (var livAlt in bancoLivros)
+                                {
+                                    if (livAlt.livisbn == varIsnbAlt)
+                                    {
+                                        Console.WriteLine("Nome livro: ");
+                                        livAlt.livnome = Console.ReadLine();
+                                        Console.WriteLine("Ano publicação livro: ");
+                                        livAlt.livanopublicacao = Console.ReadLine();
+                                        Console.WriteLine("Isbn do livro: ");
+                                        livAlt.livisbn = int.Parse(Console.ReadLine());
+                                        Console.WriteLine("Observações livro: ");
+                                        livAlt.livobservacoes = Console.ReadLine();
+                                        Console.WriteLine("Id editora livro: ");
+                                        livAlt.ediid = int.Parse(Console.ReadLine());
+                                        break;
+                                    }
+                                }
+                                break;
+
+                            // Excluir Livro
+                            case 12:
+                                Console.WriteLine("Isbn do livro para excluir: ");
+                                int varIsnbExc = int.Parse(Console.ReadLine());
+                                foreach (var livExc in bancoLivros)
+                                {
+                                    if (livExc.livisbn == varIsnbExc)
+                                    {
+                                        bancoLivros.Remove(livExc);
+                                        break;
+                                    }
+                                }
+
+                                break;
+
+                            // Pesquisar Livro
+                            case 13:
+                                Console.WriteLine("Isbn do livro para pesquisar: ");
+                                int varIsnbPes = int.Parse(Console.ReadLine());
+                                foreach (var livPes in bancoLivros) { 
+                                    if (livPes.livisbn == varIsnbPes)
+                                    {
+                                        Console.WriteLine(
+                                            livPes.livid + " - " +
+                                            livPes.livnome + " - " +
+                                            livPes.livanopublicacao + " - " +
+                                            livPes.livisbn + " - " +
+                                            livPes.livobservacoes + " - " +
+                                            livPes.ediid
+                                            
+                                        );
+                                    }
+                                }
+
+                                break;
+
+                            // Exibir Livros
+                            case 14:
+                                foreach (var livExi in bancoLivros)
+                                {
+                                    Console.WriteLine(
+                                        livExi.livid + " - " +
+                                        livExi.livnome + " - " +
+                                        livExi.livanopublicacao + " - " +
+                                        livExi.livisbn + " - " +
+                                        livExi.livobservacoes + " - " +
+                                        livExi.ediid
+                                    );
+                                }
+                                break;
+                        }
+                    }
+                }
+                // Operações Autores
+                else if (opc == 3)
+                {
+                    // Menu Autores
+                    while (opcsub != 19)
+                    {
+                        Console.WriteLine("--------------");
+                        Console.WriteLine("Autores");
+                        Console.WriteLine("10.Inserir");
+                        Console.WriteLine("11.Alterar");
+                        Console.WriteLine("12.Excluir");
+                        Console.WriteLine("13.Pesquisar");
+                        Console.WriteLine("14.Exibir");
+                        Console.WriteLine("19. Sair");
+                        Console.WriteLine("Digite a opção: ");
+                        opcsub = int.Parse(Console.ReadLine());
+                        Console.WriteLine("--------------");
+
+
+                        switch (opcsub)
+                        {
+
+                            // Inserir Autor
+                            case 10:
+                                Autor itemIns = new Autor();
+                                Console.WriteLine("Id autor: ");
+                                itemIns.autid = int.Parse(Console.ReadLine());
+                                Console.WriteLine("Nome autor: ");
+                                itemIns.autnome = Console.ReadLine();
+                                Console.WriteLine("Pseudonimo do autor: ");
+                                itemIns.autpseudonimo = Console.ReadLine();
+                                Console.WriteLine("Observações autor: ");
+                                itemIns.autobservacoes = Console.ReadLine();
+
+                                bancoAutores.Add(itemIns);
+
+                                break;
+
+                            // Alterar Autor
+                            case 11:
+                                Console.WriteLine("Id do autor para alterar: ");
+                                int varIdAlt = int.Parse(Console.ReadLine());
+                                foreach (var autAlt in bancoAutores)
+                                {
+                                    if (autAlt.autid == varIdAlt)
+                                    {
+                                        Console.WriteLine("Nome autor: ");
+                                        autAlt.autnome = Console.ReadLine();
+                                        Console.WriteLine("Pseudonimo do autor: ");
+                                        autAlt.autpseudonimo = Console.ReadLine();
+                                        Console.WriteLine("Observações autor: ");
+                                        autAlt.autobservacoes = Console.ReadLine();
+                                        break;
+                                    }
+                                }
+                                break;
+
+                            // Excluir Autor
+                            case 12:
+                                Console.WriteLine("Id do autor para excluir: ");
+                                int varIdExc = int.Parse(Console.ReadLine());
+                                foreach (var autExc in bancoAutores)
+                                {
+                                    if (autExc.autid == varIdExc)
+                                    {
+                                        bancoAutores.Remove(autExc);
+                                        break;
+                                    }
+                                }
+
+                                break;
+
+                            // Pesquisar Autor
+                            case 13:
+                                Console.WriteLine("Id do autor para pesquisar: ");
+                                int varIdPes = int.Parse(Console.ReadLine());
+                                foreach (var autPes in bancoAutores)
+                                {
+                                    if (autPes.autid == varIdPes)
+                                    {
+                                        Console.WriteLine(
+                                            autPes.autid + " - " +
+                                            autPes.autnome + " - " +
+                                            autPes.autpseudonimo + " - " +
+                                            autPes.autobservacoes
+
+                                        );
+                                    }
+                                }
+
+                                break;
+
+                            // Exibir Autores
+                            case 14:
+                                foreach (var autExi in bancoAutores)
+                                {
+                                    Console.WriteLine(
+                                        autExi.autid + " - " +
+                                        autExi.autnome + " - " +
+                                        autExi.autpseudonimo + " - " +
+                                        autExi.autobservacoes
+                                    );
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
