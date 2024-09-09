@@ -1,6 +1,8 @@
 ﻿using sisedi;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,22 +11,22 @@ namespace sisedi
 {
     internal class Program
     {
-
-
+        // Salvar Editoras
         static void SalvarEditorasEmArquivoCsv(List<Editora> bancoEditoras, string caminhoDoArquivo)
         {
             try
             {
                 using (StreamWriter writer = new StreamWriter(caminhoDoArquivo))
                 {
-                    writer.WriteLine("codigo,nome,sigla");
+                    writer.WriteLine("codigo,nome,sigla,observacoes");
                     foreach (var editora in bancoEditoras)
                     {
                         writer.WriteLine( 
                             $"{editora.ediid}," +
-                            $"{editora.edinome}, " +
-                            $"{editora.edisigla}
-                        ");
+                            $"{editora.edinome}," +
+                            $"{editora.edisigla}," +
+                            $"{editora.ediobservacoes}"
+                            );
                     }
                 }
             }
@@ -34,6 +36,7 @@ namespace sisedi
             }
         }
 
+        // Carregar editoras
         static List<Editora> CarregarEditorasDeArquivoCsv(string caminhoDoArquivo)
         {
             var bancoEditoras = new List<Editora>();
@@ -47,15 +50,17 @@ namespace sisedi
                         while ((linha = reader.ReadLine()) != null)
                         {
                             var partes = linha.Split(',');
-                            if (partes.Length == 3)
+                            if (partes.Length == 4)
                             {
                                 int codigo = int.Parse(partes[0]);
                                 string nome = partes[1];
                                 string sigla = partes[2];
+                                string observacao = partes[3];
                                 bancoEditoras.Add(new Editora{
                                     ediid = codigo,
                                     edinome = nome,
-                                    edisigla = sigla
+                                    edisigla = sigla,
+                                    ediobservacoes = observacao
                                 });
                             }
                         }
@@ -69,6 +74,140 @@ namespace sisedi
             return bancoEditoras;
         }
 
+        // Salvar Livros
+        static void SalvarLivrosEmArquivoCsv(List<Livro> bancoLivros, string caminhoDoArquivo)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(caminhoDoArquivo))
+                {
+                    writer.WriteLine("id,nome,anopublicacao,isbn,observacoes,ideditora");
+                    foreach (var livro in bancoLivros)
+                    {
+                        writer.WriteLine(
+                            $"{livro.livid}," +
+                            $"{livro.livnome}," +
+                            $"{livro.livanopublicacao}," +
+                            $"{livro.livisbn}," +
+                            $"{livro.livobservacoes}," +
+                            $"{livro.ediid},"
+                            );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro ao salvar a lista de livros em  CSV: {ex.Message}");
+            }
+        }
+
+        // Carregar Livros
+        static List<Livro> CarregarLivrosDeArquivoCsv(string caminhoDoArquivo)
+        {
+            var bancoLivros = new List<Livro>();
+            try
+            {
+                if (File.Exists(caminhoDoArquivo) == true)
+                {
+                    using (StreamReader reader = new StreamReader(caminhoDoArquivo))
+                    {
+                        string linha = reader.ReadLine();
+                        while ((linha = reader.ReadLine()) != null)
+                        {
+                            var partes = linha.Split(',');
+                            if (partes.Length == 6)
+                            {
+                                int codigo = int.Parse(partes[0]);
+                                string nome = partes[1];
+                                int ano = int.Parse(partes[2]);
+                                int isbn = int.Parse(partes[3]);
+                                string observacao = partes[4];
+                                int ideditora = int.Parse(partes[5]);
+                                bancoLivros.Add(new Livro
+                                {
+                                    livid = codigo,
+                                    livnome = nome,
+                                    livanopublicacao = ano,
+                                    livisbn = isbn,
+                                    livobservacoes = observacao,
+                                    ediid = ideditora
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro ao carregar a lista de livros de CSV: {ex.Message}");
+            }
+            return bancoLivros;
+        }
+
+        // Salvar Autores
+        static void SalvarAutoresEmArquivoCsv(List<Autor> bancoAutores, string caminhoDoArquivo)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(caminhoDoArquivo))
+                {
+                    writer.WriteLine("codigo,nome,sigla");
+                    foreach (var autor in bancoAutores)
+                    {
+                        writer.WriteLine(
+                            $"{autor.autid}," +
+                            $"{autor.autnome}," +
+                            $"{autor.autpseudonimo}," +
+                            $"{autor.autobservacoes}"
+                            );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro ao salvar a lista de autores em  CSV: {ex.Message}");
+            }
+        }
+
+        // Carregar Autores
+        static List<Autor> CarregarAutoresDeArquivoCsv(string caminhoDoArquivo)
+        {
+            var bancoAutores = new List<Autor>();
+            try
+            {
+                if (File.Exists(caminhoDoArquivo) == true)
+                {
+                    using (StreamReader reader = new StreamReader(caminhoDoArquivo))
+                    {
+                        string linha = reader.ReadLine();
+                        while ((linha = reader.ReadLine()) != null)
+                        {
+                            var partes = linha.Split(',');
+                            if (partes.Length == 4)
+                            {
+                                int codigo = int.Parse(partes[0]);
+                                string nome = partes[1];
+                                string pseudonimo = partes[2];
+                                string observacao = partes[3];
+                                bancoAutores.Add(new Autor
+                                {
+                                    autid = codigo,
+                                    autnome = nome,
+                                    autpseudonimo = pseudonimo,
+                                    autobservacoes = observacao,
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro ao carregar a lista de editoras de CSV: {ex.Message}");
+            }
+            return bancoAutores;
+        }
+
         static void Main(string[] args)
         {
 
@@ -79,7 +218,9 @@ namespace sisedi
             List<Livro> bancoLivros = new List<Livro>();
             List<Autor> bancoAutores = new List<Autor>();
 
-            CarregarEditorasDeArquivoCsv(bancoEditoras, "estados.csv");
+            bancoEditoras = CarregarEditorasDeArquivoCsv("editoras.csv");
+            bancoLivros = CarregarLivrosDeArquivoCsv("livros.csv");
+            bancoAutores = CarregarAutoresDeArquivoCsv("autores.csv");
 
             // Menu principal
             while (opc != 9)
@@ -228,7 +369,7 @@ namespace sisedi
                                 Console.WriteLine("Nome livro: ");
                                 itemIns.livnome = Console.ReadLine();
                                 Console.WriteLine("Ano de publicação livro: ");
-                                itemIns.livanopublicacao = Console.ReadLine();
+                                itemIns.livanopublicacao = int.Parse(Console.ReadLine());
                                 Console.WriteLine("Isbn do livro: ");
                                 itemIns.livisbn = int.Parse(Console.ReadLine());
                                 Console.WriteLine("Observações livro: ");
@@ -251,7 +392,7 @@ namespace sisedi
                                         Console.WriteLine("Nome livro: ");
                                         livAlt.livnome = Console.ReadLine();
                                         Console.WriteLine("Ano publicação livro: ");
-                                        livAlt.livanopublicacao = Console.ReadLine();
+                                        livAlt.livanopublicacao = int.Parse(Console.ReadLine());
                                         Console.WriteLine("Isbn do livro: ");
                                         livAlt.livisbn = int.Parse(Console.ReadLine());
                                         Console.WriteLine("Observações livro: ");
@@ -425,7 +566,9 @@ namespace sisedi
                 }
             }
 
-            SalvarEditorasEmArquivoCsv(bancoEditoras, "estados.csv");
+            SalvarEditorasEmArquivoCsv(bancoEditoras, "editoras.csv");
+            SalvarLivrosEmArquivoCsv(bancoLivros, "livros.csv");
+            SalvarAutoresEmArquivoCsv(bancoAutores, "autores.csv");
         }
     }
 }
