@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Configuration;
+
 namespace sisedi
 {
     internal class Program
@@ -214,13 +216,21 @@ namespace sisedi
             int opc = 0;
             int opcsub = 0;
 
+            // Inicialização bancos RAM
             List<Editora> bancoEditoras = new List<Editora>();
             List<Livro> bancoLivros = new List<Livro>();
             List<Autor> bancoAutores = new List<Autor>();
+            
+            // Caminho Banco
+            string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
+            string nomeBancoEditoras = ConfigurationManager.AppSettings["nomeBancoEditoras"];
+            string nomeBancoAutores = ConfigurationManager.AppSettings["nomeBancoAutores"];
+            string nomeBancoLivros = ConfigurationManager.AppSettings["nomeBancoLivros"];
 
-            bancoEditoras = CarregarEditorasDeArquivoCsv("editoras.csv");
-            bancoLivros = CarregarLivrosDeArquivoCsv("livros.csv");
-            bancoAutores = CarregarAutoresDeArquivoCsv("autores.csv");
+            // Carregar dados dos bancos para persistência em RAM
+            bancoEditoras = CarregarEditorasDeArquivoCsv(caminhoBanco + nomeBancoEditoras);
+            bancoLivros = CarregarLivrosDeArquivoCsv(caminhoBanco + nomeBancoLivros);
+            bancoAutores = CarregarAutoresDeArquivoCsv(caminhoBanco + nomeBancoAutores);
 
             // Menu principal
             while (opc != 9)
@@ -566,9 +576,10 @@ namespace sisedi
                 }
             }
 
-            SalvarEditorasEmArquivoCsv(bancoEditoras, "editoras.csv");
-            SalvarLivrosEmArquivoCsv(bancoLivros, "livros.csv");
-            SalvarAutoresEmArquivoCsv(bancoAutores, "autores.csv");
+            // Salva dados no nos bancos para persistência em disco
+            SalvarEditorasEmArquivoCsv(bancoEditoras, caminhoBanco + nomeBancoEditoras);
+            SalvarLivrosEmArquivoCsv(bancoLivros, caminhoBanco + nomeBancoLivros);
+            SalvarAutoresEmArquivoCsv(bancoAutores, caminhoBanco + nomeBancoAutores);
         }
     }
 }
