@@ -1,7 +1,0 @@
-C:\Users\Administrador\Downloads\sisedi-master\sisedi\obj\Debug\sisedi.csproj.AssemblyReference.cache
-C:\Users\Administrador\Downloads\sisedi-master\sisedi\obj\Debug\sisedi.csproj.CoreCompileInputs.cache
-C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisedi.exe.config
-C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisedi.exe
-C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisedi.pdb
-C:\Users\Administrador\Downloads\sisedi-master\sisedi\obj\Debug\sisedi.exe
-C:\Users\Administrador\Downloads\sisedi-master\sisedi\obj\Debug\sisedi.pdb
