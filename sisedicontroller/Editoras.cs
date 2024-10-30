@@ -14,7 +14,17 @@ namespace sisedicontroller
     {
         private List<Editora> bancoEditoras = new List<Editora>();
         string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
+        if (caminhoBanco == null )
+        {
+            caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         string nomeBancoEditoras = ConfigurationManager.AppSettings["nomeBancoEditoras"];
+
+        if (string.IsNullOrEmpty(nomeBancoEditoras) == false)
+        {
+            nomeBancoEditoras = "editoras.csv";
+        }
 
         // Salvar Editoras
         public void SalvarEditorasEmArquivoCsv()
