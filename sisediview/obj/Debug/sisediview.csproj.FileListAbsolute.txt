@@ -1,0 +1,11 @@
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\obj\Debug\sisediview.csproj.AssemblyReference.cache
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\obj\Debug\sisediview.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\bin\Debug\sisediview.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\bin\Debug\sisediview.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\bin\Debug\sisedicontroller.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\bin\Debug\sisedimodel.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\bin\Debug\sisedicontroller.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\bin\Debug\sisedimodel.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\obj\Debug\sisediview.csproj.Up2Date
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\obj\Debug\sisediview.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisediview\obj\Debug\sisediview.pdb
