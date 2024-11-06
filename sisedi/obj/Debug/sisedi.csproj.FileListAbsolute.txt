@@ -19,3 +19,10 @@ C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedi\bin\Debug\si
 C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedi\bin\Debug\sisedicontroller.pdb
 C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedi\bin\Debug\sisedimodel.pdb
 C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedi\obj\Debug\sisedi.csproj.Up2Date
+C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisediview.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisedicontroller.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisedimodel.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisediview.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisedicontroller.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedi\bin\Debug\sisedimodel.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedi\obj\Debug\sisedi.csproj.Up2Date
