@@ -13,21 +13,8 @@ namespace sisedicontroller
     public class Livros
     {
         private List<Livro> bancoLivros = new List<Livro>();
-
-        string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
-        if (caminhoBanco == null )
-        {
-            caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
-        }
-
-        string nomeBancoLivros = ConfigurationManager.AppSettings["nomeBancoLivros"];
-
-        if (string.IsNullOrEmpty(nomeBancoLivros) == false)
-        {
-            nomeBancoLivros = "livros.csv";
-        }
-
-
+        private string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
+        private string nomeBancoLivros = ConfigurationManager.AppSettings["nomeBancoLivros"];
         // Salvar Livros
         public void SalvarLivrosEmArquivoCsv()
         {
@@ -100,6 +87,19 @@ namespace sisedicontroller
 
         public Livros()
         {
+
+            
+            if (caminhoBanco == null )
+            {
+                caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            
+
+            if (string.IsNullOrEmpty(nomeBancoLivros) == false)
+            {
+                nomeBancoLivros = "livros.csv";
+            }
             bancoLivros = CarregarLivrosDeArquivoCsv();
         }
 

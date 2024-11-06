@@ -12,21 +12,10 @@ namespace sisedicontroller
 {
     public class Autores
     {
-        List<Autor> bancoAutores = new List<Autor>();
-        // Caminho Banco
-        string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
-        if (caminhoBanco == null )
-        {
-            caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
-        }
 
-        string nomeBancoAutores = ConfigurationManager.AppSettings["nomeBancoAutores"];
-
-        if (string.IsNullOrEmpty(nomeBancoAutores) == false)
-        {
-            nomeBancoAutores = "autores.csv";
-        }
-        
+        private List<Autor> bancoAutores = new List<Autor>();
+        private string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
+        private string nomeBancoAutores = ConfigurationManager.AppSettings["nomeBancoAutores"];
 
         // Salvar Autores
         public void SalvarAutoresEmArquivoCsv()
@@ -94,6 +83,18 @@ namespace sisedicontroller
 
         public Autores()
         {
+           
+
+            if (caminhoBanco == null)
+            {
+                caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            if (string.IsNullOrEmpty(nomeBancoAutores) == false)
+            {
+                nomeBancoAutores = "autores.csv";
+            }
+
             bancoAutores = CarregarAutoresDeArquivoCsv();
         }
 

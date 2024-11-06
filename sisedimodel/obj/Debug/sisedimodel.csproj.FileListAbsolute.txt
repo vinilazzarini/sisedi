@@ -4,3 +4,9 @@ C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedimodel\obj\Deb
 C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedimodel\obj\Debug\sisedimodel.csproj.CoreCompileInputs.cache
 C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedimodel\obj\Debug\sisedimodel.dll
 C:\Users\Administrador\Downloads\sisedi-master\sisedi-master\sisedimodel\obj\Debug\sisedimodel.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedimodel\bin\Debug\sisedimodel.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedimodel\bin\Debug\sisedimodel.pdb
+C:\Users\Administrador\Downloads\sisedi-master\sisedimodel\obj\Debug\sisedimodel.csproj.AssemblyReference.cache
+C:\Users\Administrador\Downloads\sisedi-master\sisedimodel\obj\Debug\sisedimodel.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\Downloads\sisedi-master\sisedimodel\obj\Debug\sisedimodel.dll
+C:\Users\Administrador\Downloads\sisedi-master\sisedimodel\obj\Debug\sisedimodel.pdb

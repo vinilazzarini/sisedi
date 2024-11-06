@@ -12,19 +12,10 @@ namespace sisedicontroller
 {
     public class Editoras
     {
+
         private List<Editora> bancoEditoras = new List<Editora>();
-        string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
-        if (caminhoBanco == null )
-        {
-            caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
-        }
-
-        string nomeBancoEditoras = ConfigurationManager.AppSettings["nomeBancoEditoras"];
-
-        if (string.IsNullOrEmpty(nomeBancoEditoras) == false)
-        {
-            nomeBancoEditoras = "editoras.csv";
-        }
+        private string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
+        private string nomeBancoEditoras = ConfigurationManager.AppSettings["nomeBancoEditoras"];
 
         // Salvar Editoras
         public void SalvarEditorasEmArquivoCsv()
@@ -92,6 +83,20 @@ namespace sisedicontroller
 
         public Editoras()
         {
+
+            
+
+            if (caminhoBanco == null)
+            {
+                caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+
+            if (string.IsNullOrEmpty(nomeBancoEditoras) == false)
+            {
+                nomeBancoEditoras = "editoras.csv";
+            }
+
             bancoEditoras = CarregarEditorasDeArquivoCsv();
         }
 
