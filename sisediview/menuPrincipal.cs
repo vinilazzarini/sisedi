@@ -276,6 +276,10 @@ namespace sisediview
                 Console.WriteLine("9.Sair");
                 Console.WriteLine("Digite a opção: ");
 
+                
+                
+                
+                
                 opc = int.Parse(Console.ReadLine());
 
                 // Operações Editoras

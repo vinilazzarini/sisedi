@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 using sisedimodel;
 
+// Passo 1
+using System.Data;
+using System.Data.SqlClient;
+
 namespace sisedicontroller
 {
     public class Livros
@@ -15,6 +19,10 @@ namespace sisedicontroller
         private List<Livro> bancoLivros = new List<Livro>();
         private string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
         private string nomeBancoLivros = ConfigurationManager.AppSettings["nomeBancoLivros"];
+
+        // Passo 2
+        string connectionString = "Server=BRJND02L\\MSSQLSERVER01; Database=SYSEDIDB; Integrated Security=True;";
+
         // Salvar Livros
         public void SalvarLivrosEmArquivoCsv()
         {
@@ -103,10 +111,32 @@ namespace sisedicontroller
             bancoLivros = CarregarLivrosDeArquivoCsv();
         }
 
+        // Passo 3
+        /*
         public void inserir(Livro Livro)
         {
             bancoLivros.Add(Livro);
             Console.WriteLine("Livro inserida com sucesso");
+        }
+        */
+        public void inserir(Livro livro)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO LIVROS (LIVID,LIVNOME, LIVANOPUBLICACAO, LIVISBN, LIVOBSERVACOES, EDIID) " +
+                               "VALUES (@livid,@livnome, @livanopublicacao, @livisbn, @livobservacoes, @ediid)";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@livid", livro.livid);
+                    command.Parameters.AddWithValue("@livnome", livro.livnome);
+                    command.Parameters.AddWithValue("@livanopublicacao", livro.livanopublicacao);
+                    command.Parameters.AddWithValue("@livisbn", livro.livisbn);
+                    command.Parameters.AddWithValue("@livobservacoes", livro.livobservacoes);
+                    command.Parameters.AddWithValue("@ediid", livro.ediid);  // A editora do livro
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public void alterar(int isbn, Livro livAlterado)
@@ -155,19 +185,67 @@ namespace sisedicontroller
                 }
             }
         }
-
+        /*
+            public void exibirTodos()
+                {
+                    foreach (var livExi in bancoLivros)
+                    {
+                        Console.WriteLine(
+                            livExi.livid + " - " +
+                            livExi.livnome + " - " +
+                            livExi.livanopublicacao + " - " +
+                            livExi.livisbn + " - " +
+                            livExi.livobservacoes + " - " +
+                            livExi.ediid
+                        );
+                    }
+                }
+        */
         public void exibirTodos()
         {
-            foreach (var livExi in bancoLivros)
+            string query = "SELECT LIVID, LIVNOME, LIVANOPUBLICACAO, LIVISBN, LIVOBSERVACOES, EDIID FROM LIVROS";
+
+            // Cria a conexão com o banco de dados
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                Console.WriteLine(
-                    livExi.livid + " - " +
-                    livExi.livnome + " - " +
-                    livExi.livanopublicacao + " - " +
-                    livExi.livisbn + " - " +
-                    livExi.livobservacoes + " - " +
-                    livExi.ediid
-                );
+                try
+                {
+                    // Abre a conexão
+                    connection.Open();
+
+                    // Cria o comando SQL
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    // Executa o comando e obtém os dados
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    // Exibe os dados, se houver registros
+                    if (reader.HasRows)
+                    {
+                        Console.WriteLine("ID\tLIVNOME\tLIVANOPUBLICACAO\tLIVISBN\tLIVOBSERVACOES\tEDIID");
+                        Console.WriteLine("---------------------------------------------------------------");
+
+                        // Lê os registros e exibe na tela
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader["LIVID"]}\t{reader["LIVNOME"]}\t{reader["LIVANOPUBLICACAO"]}\t\t\t{reader["LIVISBN"]}\t{reader["LIVOBSERVACOES"]}\t\t{reader["EDIID"]}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nenhum registro encontrado.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Em caso de erro, exibe a mensagem de erro
+                    Console.WriteLine($"Erro: {ex.Message}");
+                }
+                finally
+                {
+                    // Fecha a conexão
+                    connection.Close();
+                }
             }
         }
     }

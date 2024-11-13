@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 using sisedimodel;
 
+// Passo 1
+using System.Data;
+using System.Data.SqlClient;
+
 namespace sisedicontroller
 {
     public class Editoras
@@ -16,6 +20,9 @@ namespace sisedicontroller
         private List<Editora> bancoEditoras = new List<Editora>();
         private string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
         private string nomeBancoEditoras = ConfigurationManager.AppSettings["nomeBancoEditoras"];
+
+        // Passo 2
+        string connectionString = "Server=BRJND02L\\MSSQLSERVER01; Database=SYSEDIDB; Integrated Security=True;";
 
         // Salvar Editoras
         public void SalvarEditorasEmArquivoCsv()
@@ -100,10 +107,30 @@ namespace sisedicontroller
             bancoEditoras = CarregarEditorasDeArquivoCsv();
         }
 
+        // Passo 3
+        /*
         public void inserir(Editora editora)
         {
             bancoEditoras.Add(editora);
             Console.WriteLine("Editora inserida com sucesso");
+        }
+        */
+        public void inserir(Editora editora)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO EDITORAS (EDIID,EDINOME, EDISIGLA, EDIOBSERVACOES) " +
+                               "VALUES (@ediid,@edinome, @edisigla, @ediobservacoes)";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ediid", editora.ediid);
+                    command.Parameters.AddWithValue("@edinome", editora.edinome);
+                    command.Parameters.AddWithValue("@edisigla", editora.edisigla);
+                    command.Parameters.AddWithValue("@ediobservacoes", editora.ediobservacoes);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public void alterar(string sigla, Editora ediAlterada)
@@ -151,6 +178,7 @@ namespace sisedicontroller
             }
         }
 
+        /*
         public void exibirTodos()
         {
             foreach (var editora in bancoEditoras)
@@ -161,6 +189,54 @@ namespace sisedicontroller
                     editora.edisigla + " - " +
                     editora.ediobservacoes
                 );
+            }
+        }
+        */
+        public void exibirTodos()
+        {
+            string query = "SELECT EDIID,EDINOME,EDISIGLA,EDIOBSERVACOES FROM EDITORAS";
+
+            // Cria a conexão com o banco de dados
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    // Abre a conexão
+                    connection.Open();
+
+                    // Cria o comando SQL
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    // Executa o comando e obtém os dados
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    // Exibe os dados, se houver registros
+                    if (reader.HasRows)
+                    {
+                        Console.WriteLine("ID\tNOME\tSIGLA\tOBSERVACOES");
+                        Console.WriteLine("------------------------------------");
+
+                        // Lê os registros e exibe na tela
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader["EDIID"]}\t{reader["EDINOME"]}\t{reader["EDISIGLA"]}\t{reader["EDIOBSERVACOES"]}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nenhum registro encontrado.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Em caso de erro, exibe a mensagem de erro
+                    Console.WriteLine($"Erro: {ex.Message}");
+                }
+                finally
+                {
+                    // Fecha a conexão
+                    connection.Close();
+                }
             }
         }
 

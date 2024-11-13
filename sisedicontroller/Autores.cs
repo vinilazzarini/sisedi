@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 using sisedimodel;
 
+// Passo 1
+using System.Data;
+using System.Data.SqlClient;
+
 namespace sisedicontroller
 {
     public class Autores
@@ -16,6 +20,9 @@ namespace sisedicontroller
         private List<Autor> bancoAutores = new List<Autor>();
         private string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
         private string nomeBancoAutores = ConfigurationManager.AppSettings["nomeBancoAutores"];
+
+        // Passo 2
+        string connectionString = "Server=BRJND02L\\MSSQLSERVER01; Database=SYSEDIDB; Integrated Security=True;";
 
         // Salvar Autores
         public void SalvarAutoresEmArquivoCsv()
@@ -98,11 +105,29 @@ namespace sisedicontroller
             bancoAutores = CarregarAutoresDeArquivoCsv();
         }
 
-
+        /*
+        public void inserir(Autor autor)
+            {
+                bancoAutores.Add(autor);
+                Console.WriteLine("Autor inserida com sucesso");
+            }
+        */
         public void inserir(Autor autor)
         {
-            bancoAutores.Add(autor);
-            Console.WriteLine("Autor inserida com sucesso");
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO AUTORES (AUTID, AUTNOME, AUTPSEUDONIMO, AUTOBSERVACOES) " +
+                               "VALUES (@autid, @autnome, @autpseudonimo, @autobservacoes)";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@autid", autor.autid);
+                    command.Parameters.AddWithValue("@autnome", autor.autnome);
+                    command.Parameters.AddWithValue("@autpseudonimo", autor.autpseudonimo);
+                    command.Parameters.AddWithValue("@autobservacoes", autor.autobservacoes);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public void alterar(int id, Autor autAlterado)
@@ -148,18 +173,67 @@ namespace sisedicontroller
             }
         }
 
+        /* 
+        
+        public void exibirTodos()
+            {
+                foreach (var autExi in bancoAutores)
+                {
+                    Console.WriteLine(
+                        autExi.autid + " - " +
+                        autExi.autnome + " - " +
+                        autExi.autpseudonimo + " - " +
+                        autExi.autobservacoes
+                    );
+                }
+            }
+        */
         public void exibirTodos()
         {
-            foreach (var autExi in bancoAutores)
+            string query = "SELECT AUTID, AUTNOME, AUTPSEUDONIMO, AUTOBSERVACOES FROM AUTORES";
+
+            // Cria a conexão com o banco de dados
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                Console.WriteLine(
-                    autExi.autid + " - " +
-                    autExi.autnome + " - " +
-                    autExi.autpseudonimo + " - " +
-                    autExi.autobservacoes
-                );
+                try
+                {
+                    // Abre a conexão
+                    connection.Open();
+
+                    // Cria o comando SQL
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    // Executa o comando e obtém os dados
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    // Exibe os dados, se houver registros
+                    if (reader.HasRows)
+                    {
+                        Console.WriteLine("ID\tAUTNOME\tAUTPSEUDONIMO\tAUTOBSERVACOES");
+                        Console.WriteLine("--------------------------------------------");
+
+                        // Lê os registros e exibe na tela
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"{reader["AUTID"]}\t{reader["AUTNOME"]}\t{reader["AUTPSEUDONIMO"]}\t\t{reader["AUTOBSERVACOES"]}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nenhum registro encontrado.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Em caso de erro, exibe a mensagem de erro
+                    Console.WriteLine($"Erro: {ex.Message}");
+                }
+                finally
+                {
+                    // Fecha a conexão
+                    connection.Close();
+                }
             }
         }
-
     }
 }
