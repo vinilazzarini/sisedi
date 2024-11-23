@@ -139,6 +139,7 @@ namespace sisedicontroller
             }
         }
 
+        /*
         public void alterar(int isbn, Livro livAlterado)
         {
             foreach (var livro in bancoLivros)
@@ -154,7 +155,28 @@ namespace sisedicontroller
                 }
             }
         }
+        */
+        public void alterar(int isbn, Livro livAlterado)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "UPDATE LIVROS SET LIVNOME = @livnome, LIVANOPUBLICACAO = @livanopublicacao, " +
+                               "LIVISBN = @livisbn, LIVOBSERVACOES = @livobservacoes, EDIID = @ediid WHERE LIVISBN = @isbn";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@isbn", isbn);
+                    command.Parameters.AddWithValue("@livnome", livAlterado.livnome);
+                    command.Parameters.AddWithValue("@livanopublicacao", livAlterado.livanopublicacao);
+                    command.Parameters.AddWithValue("@livisbn", livAlterado.isbn); 
+                    command.Parameters.AddWithValue("@livobservacoes", livAlterado.livobservacoes);
+                    command.Parameters.AddWithValue("@ediid", livAlterado.ediid);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
 
+        /*
         public void excluir(int isbn)
         {
             foreach (var livro in bancoLivros)
@@ -166,7 +188,22 @@ namespace sisedicontroller
                 }
             }
         }
+        */
+        public void excluir(int isbn)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "DELETE FROM LIVROS WHERE LIVISBN = @livisbn";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@livisbn", isbn);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
 
+        /*
         public void pesquisar(int isbn)
         {
             foreach (var livPes in bancoLivros)
@@ -185,6 +222,35 @@ namespace sisedicontroller
                 }
             }
         }
+        */
+        public void pesquisar(int isbn)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT LIVID, LIVNOME, LIVANOPUBLICACAO, LIVISBN, LIVOBSERVACOES, EDIID FROM LIVROS WHERE LIVISBN = @livisbn";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@livisbn", isbn);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"{reader["LIVID"]} - {reader["LIVNOME"]} - {reader["LIVANOPUBLICACAO"]} - " +
+                                                  $"{reader["LIVISBN"]} - {reader["LIVOBSERVACOES"]} - {reader["EDIID"]}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nenhum registro encontrado com o ISBN informado.");
+                        }
+                    }
+                }
+            }
+        }
+
         /*
             public void exibirTodos()
                 {

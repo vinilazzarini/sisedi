@@ -18,11 +18,13 @@ namespace sisedicontroller
     {
 
         private List<Editora> bancoEditoras = new List<Editora>();
+
         private string caminhoBanco = ConfigurationManager.AppSettings["caminhoBanco"];
         private string nomeBancoEditoras = ConfigurationManager.AppSettings["nomeBancoEditoras"];
 
         // Passo 2
         string connectionString = "Server=BRJND02L\\MSSQLSERVER01; Database=SYSEDIDB; Integrated Security=True;";
+
 
         // Salvar Editoras
         public void SalvarEditorasEmArquivoCsv()
@@ -90,9 +92,7 @@ namespace sisedicontroller
 
         public Editoras()
         {
-
-            
-
+ 
             if (caminhoBanco == null)
             {
                 caminhoBanco = AppDomain.CurrentDomain.BaseDirectory;
@@ -105,6 +105,7 @@ namespace sisedicontroller
             }
 
             bancoEditoras = CarregarEditorasDeArquivoCsv();
+
         }
 
         // Passo 3
@@ -133,6 +134,7 @@ namespace sisedicontroller
             }
         }
 
+        /*
         public void alterar(string sigla, Editora ediAlterada)
         {
             foreach (var editora in bancoEditoras)
@@ -149,7 +151,34 @@ namespace sisedicontroller
                 }
             }
         }
+        */
+        public void alterar(string sigla, Editora ediAlterada)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE EDITORAS SET EDIID = @ediid,EDINOME = @edinome, EDIOBSERVACOES = @ediobservacoes WHERE EDISIGLA = @sigla";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@sigla", sigla);
+                        command.Parameters.AddWithValue("@ediid", ediAlterada.ediid);
+                        command.Parameters.AddWithValue("@edinome", ediAlterada.edinome);
+                        command.Parameters.AddWithValue("@edisigla", ediAlterada.sigla);
+                        command.Parameters.AddWithValue("@ediobservacoes", ediAlterada.ediobservacoes);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                Console.WriteLine("Editora atualizada com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao atualizar editora: {ex.Message}");
+            }
+        }
 
+        /*
         public void excluir(string sigla)
         {
             foreach (var editora in bancoEditoras)
@@ -161,7 +190,30 @@ namespace sisedicontroller
                 }
             }
         }
+        */
+        public void excluir(string sigla)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM EDITORAS WHERE EDISIGLA = @edisigla";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@edisigla", sigla);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                Console.WriteLine("Editora excluída com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao excluir editora: {ex.Message}");
+            }
+        }
 
+        /*
         public void pesquisar(string sigla)
         {
             foreach (var editora in bancoEditoras)
@@ -175,6 +227,41 @@ namespace sisedicontroller
                         editora.ediobservacoes
                     );
                 }
+            }
+        }
+        */
+        public void pesquisar(string sigla)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT EDIID, EDINOME, EDISIGLA, EDIOBSERVACOES FROM EDITORAS WHERE EDISIGLA = @edisigla";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@edisigla", sigla);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                Console.WriteLine("ID\tNOME\tSIGLA\tOBSERVACOES");
+                                while (reader.Read())
+                                {
+                                    Console.WriteLine($"{reader["EDIID"]}\t{reader["EDINOME"]}\t{reader["EDISIGLA"]}\t{reader["EDIOBSERVACOES"]}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Nenhuma editora encontrada com a sigla especificada.");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao pesquisar editora: {ex.Message}");
             }
         }
 

@@ -130,6 +130,7 @@ namespace sisedicontroller
             }
         }
 
+        /*
         public void alterar(int id, Autor autAlterado)
         {
             foreach (var autor in bancoAutores)
@@ -143,7 +144,45 @@ namespace sisedicontroller
                 }
             }
         }
+        */
+        public void alterar(int id, Autor autAlterado)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE AUTORES " +
+                                   "SET AUTNOME = @autnome, AUTPSEUDONIMO = @autpseudonimo, AUTOBSERVACOES = @autobservacoes " +
+                                   "WHERE AUTID = @id";
 
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        command.Parameters.AddWithValue("@autnome", autAlterado.autnome);
+                        command.Parameters.AddWithValue("@autpseudonimo", autAlterado.autpseudonimo);
+                        command.Parameters.AddWithValue("@autobservacoes", autAlterado.autobservacoes);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine("Autor atualizado com sucesso.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nenhum autor encontrado com o ID especificado.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao alterar o autor: {ex.Message}");
+            }
+        }
+
+        /*
         public void excluir(int id)
         {
             foreach (var autor in bancoAutores)
@@ -155,7 +194,39 @@ namespace sisedicontroller
                 }
             }
         }
+        */
+        public void excluir(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM AUTORES WHERE AUTID = @id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
 
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine("Autor excluído com sucesso.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nenhum autor encontrado com o ID especificado.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao excluir o autor: {ex.Message}");
+            }
+        }
+
+        /*
         public void pesquisar(int id)
         {
             foreach (var autor in bancoAutores)
@@ -170,6 +241,44 @@ namespace sisedicontroller
 
                     );
                 }
+            }
+        }
+        */
+        public void pesquisar(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT AUTID, AUTNOME, AUTPSEUDONIMO, AUTOBSERVACOES FROM AUTORES WHERE AUTID = @id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    Console.WriteLine($"ID: {reader["AUTID"]}");
+                                    Console.WriteLine($"Nome: {reader["AUTNOME"]}");
+                                    Console.WriteLine($"Pseudônimo: {reader["AUTPSEUDONIMO"]}");
+                                    Console.WriteLine($"Observações: {reader["AUTOBSERVACOES"]}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Nenhum autor encontrado com o ID especificado.");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao pesquisar o autor: {ex.Message}");
             }
         }
 
