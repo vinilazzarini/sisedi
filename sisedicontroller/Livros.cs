@@ -168,7 +168,7 @@ namespace sisedicontroller
                     command.Parameters.AddWithValue("@isbn", isbn);
                     command.Parameters.AddWithValue("@livnome", livAlterado.livnome);
                     command.Parameters.AddWithValue("@livanopublicacao", livAlterado.livanopublicacao);
-                    command.Parameters.AddWithValue("@livisbn", livAlterado.isbn); 
+                    command.Parameters.AddWithValue("@livisbn", livAlterado.livisbn); 
                     command.Parameters.AddWithValue("@livobservacoes", livAlterado.livobservacoes);
                     command.Parameters.AddWithValue("@ediid", livAlterado.ediid);
                     command.ExecuteNonQuery();
