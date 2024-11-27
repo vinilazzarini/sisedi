@@ -165,7 +165,7 @@ namespace sisedicontroller
                         command.Parameters.AddWithValue("@sigla", sigla);
                         command.Parameters.AddWithValue("@ediid", ediAlterada.ediid);
                         command.Parameters.AddWithValue("@edinome", ediAlterada.edinome);
-                        command.Parameters.AddWithValue("@edisigla", ediAlterada.sigla);
+                        command.Parameters.AddWithValue("@edisigla", ediAlterada.edisigla);
                         command.Parameters.AddWithValue("@ediobservacoes", ediAlterada.ediobservacoes);
                         command.ExecuteNonQuery();
                     }
